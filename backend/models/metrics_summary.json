@@ -1,0 +1,1358 @@
+{
+  "svm_70-30_no_pembayang": {
+    "metrics": {
+      "accuracy": 0.5185,
+      "precision": 0.5453,
+      "recall": 0.5185,
+      "f1_score": 0.5013,
+      "split": "70-30",
+      "use_pembayang": false,
+      "train_size": 6384,
+      "test_size": 2737,
+      "num_features": 9502
+    },
+    "per_class_metrics": {
+      "PANTUN ADAT DAN RESAM": {
+        "precision": 0.8254,
+        "recall": 0.6933,
+        "f1_score": 0.7536,
+        "support": 300
+      },
+      "PANTUN AGAMA DAN KEPERCAYAAN": {
+        "precision": 0.6667,
+        "recall": 0.2056,
+        "f1_score": 0.3143,
+        "support": 107
+      },
+      "PANTUN BUDI": {
+        "precision": 0.6494,
+        "recall": 0.4032,
+        "f1_score": 0.4975,
+        "support": 124
+      },
+      "PANTUN JENAKA DAN PERMAINAN": {
+        "precision": 0.4894,
+        "recall": 0.1465,
+        "f1_score": 0.2255,
+        "support": 157
+      },
+      "PANTUN KEMBARA DAN PERANTAUAN": {
+        "precision": 0.6552,
+        "recall": 0.25,
+        "f1_score": 0.3619,
+        "support": 76
+      },
+      "PANTUN KEPAHLAWANAN": {
+        "precision": 0.7188,
+        "recall": 0.2233,
+        "f1_score": 0.3407,
+        "support": 103
+      },
+      "PANTUN KIAS DAN IBARAT": {
+        "precision": 0.4114,
+        "recall": 0.3439,
+        "f1_score": 0.3746,
+        "support": 378
+      },
+      "PANTUN NASIHAT DAN PENDIDIKAN": {
+        "precision": 0.4388,
+        "recall": 0.6611,
+        "f1_score": 0.5274,
+        "support": 596
+      },
+      "PANTUN PERCINTAAN": {
+        "precision": 0.6169,
+        "recall": 0.6311,
+        "f1_score": 0.6239,
+        "support": 347
+      },
+      "PANTUN PERIBAHASA DAN PERBILANGAN": {
+        "precision": 0.4741,
+        "recall": 0.6509,
+        "f1_score": 0.5486,
+        "support": 507
+      },
+      "PANTUN TEKA-TEKI": {
+        "precision": 0.5,
+        "recall": 0.0238,
+        "f1_score": 0.0455,
+        "support": 42
+      }
+    },
+    "confusion_matrix": [
+      [
+        208,
+        0,
+        2,
+        0,
+        1,
+        1,
+        7,
+        44,
+        24,
+        13,
+        0
+      ],
+      [
+        0,
+        22,
+        0,
+        0,
+        0,
+        0,
+        6,
+        63,
+        6,
+        10,
+        0
+      ],
+      [
+        12,
+        0,
+        50,
+        1,
+        0,
+        0,
+        8,
+        30,
+        6,
+        17,
+        0
+      ],
+      [
+        4,
+        0,
+        0,
+        23,
+        1,
+        0,
+        15,
+        33,
+        10,
+        71,
+        0
+      ],
+      [
+        2,
+        0,
+        1,
+        1,
+        19,
+        0,
+        11,
+        15,
+        22,
+        5,
+        0
+      ],
+      [
+        2,
+        0,
+        0,
+        2,
+        1,
+        23,
+        14,
+        35,
+        4,
+        21,
+        1
+      ],
+      [
+        4,
+        0,
+        2,
+        4,
+        0,
+        2,
+        130,
+        127,
+        22,
+        87,
+        0
+      ],
+      [
+        13,
+        8,
+        13,
+        5,
+        1,
+        3,
+        52,
+        394,
+        21,
+        86,
+        0
+      ],
+      [
+        6,
+        1,
+        3,
+        0,
+        3,
+        0,
+        23,
+        48,
+        219,
+        44,
+        0
+      ],
+      [
+        1,
+        2,
+        5,
+        11,
+        3,
+        3,
+        45,
+        88,
+        19,
+        330,
+        0
+      ],
+      [
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        5,
+        21,
+        2,
+        12,
+        1
+      ]
+    ]
+  },
+  "svm_80-20_no_pembayang": {
+    "metrics": {
+      "accuracy": 0.5304,
+      "precision": 0.5595,
+      "recall": 0.5304,
+      "f1_score": 0.5158,
+      "split": "80-20",
+      "use_pembayang": false,
+      "train_size": 7296,
+      "test_size": 1825,
+      "num_features": 9502
+    },
+    "per_class_metrics": {
+      "PANTUN ADAT DAN RESAM": {
+        "precision": 0.8623,
+        "recall": 0.72,
+        "f1_score": 0.7847,
+        "support": 200
+      },
+      "PANTUN AGAMA DAN KEPERCAYAAN": {
+        "precision": 0.7333,
+        "recall": 0.3056,
+        "f1_score": 0.4314,
+        "support": 72
+      },
+      "PANTUN BUDI": {
+        "precision": 0.6379,
+        "recall": 0.4458,
+        "f1_score": 0.5248,
+        "support": 83
+      },
+      "PANTUN JENAKA DAN PERMAINAN": {
+        "precision": 0.4737,
+        "recall": 0.1714,
+        "f1_score": 0.2517,
+        "support": 105
+      },
+      "PANTUN KEMBARA DAN PERANTAUAN": {
+        "precision": 0.55,
+        "recall": 0.22,
+        "f1_score": 0.3143,
+        "support": 50
+      },
+      "PANTUN KEPAHLAWANAN": {
+        "precision": 0.5769,
+        "recall": 0.2174,
+        "f1_score": 0.3158,
+        "support": 69
+      },
+      "PANTUN KIAS DAN IBARAT": {
+        "precision": 0.4581,
+        "recall": 0.369,
+        "f1_score": 0.4088,
+        "support": 252
+      },
+      "PANTUN NASIHAT DAN PENDIDIKAN": {
+        "precision": 0.4559,
+        "recall": 0.6902,
+        "f1_score": 0.5491,
+        "support": 397
+      },
+      "PANTUN PERCINTAAN": {
+        "precision": 0.6161,
+        "recall": 0.5974,
+        "f1_score": 0.6066,
+        "support": 231
+      },
+      "PANTUN PERIBAHASA DAN PERBILANGAN": {
+        "precision": 0.4705,
+        "recall": 0.6361,
+        "f1_score": 0.5409,
+        "support": 338
+      },
+      "PANTUN TEKA-TEKI": {
+        "precision": 1.0,
+        "recall": 0.0357,
+        "f1_score": 0.069,
+        "support": 28
+      }
+    },
+    "confusion_matrix": [
+      [
+        144,
+        0,
+        1,
+        0,
+        1,
+        1,
+        3,
+        27,
+        15,
+        8,
+        0
+      ],
+      [
+        0,
+        22,
+        1,
+        0,
+        0,
+        0,
+        2,
+        32,
+        5,
+        10,
+        0
+      ],
+      [
+        7,
+        0,
+        37,
+        1,
+        0,
+        0,
+        4,
+        21,
+        4,
+        9,
+        0
+      ],
+      [
+        2,
+        0,
+        0,
+        18,
+        1,
+        0,
+        8,
+        18,
+        10,
+        48,
+        0
+      ],
+      [
+        1,
+        0,
+        1,
+        1,
+        11,
+        0,
+        7,
+        12,
+        16,
+        1,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        1,
+        0,
+        15,
+        11,
+        25,
+        2,
+        15,
+        0
+      ],
+      [
+        3,
+        1,
+        1,
+        3,
+        0,
+        3,
+        93,
+        85,
+        11,
+        52,
+        0
+      ],
+      [
+        6,
+        4,
+        9,
+        1,
+        1,
+        3,
+        30,
+        274,
+        8,
+        61,
+        0
+      ],
+      [
+        2,
+        1,
+        1,
+        2,
+        3,
+        0,
+        15,
+        39,
+        138,
+        30,
+        0
+      ],
+      [
+        2,
+        2,
+        6,
+        11,
+        3,
+        4,
+        27,
+        54,
+        14,
+        215,
+        0
+      ],
+      [
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        3,
+        14,
+        1,
+        8,
+        1
+      ]
+    ]
+  },
+  "svm_90-10_no_pembayang": {
+    "metrics": {
+      "accuracy": 0.5509,
+      "precision": 0.5613,
+      "recall": 0.5509,
+      "f1_score": 0.5334,
+      "split": "90-10",
+      "use_pembayang": false,
+      "train_size": 8208,
+      "test_size": 913,
+      "num_features": 9502
+    },
+    "per_class_metrics": {
+      "PANTUN ADAT DAN RESAM": {
+        "precision": 0.8352,
+        "recall": 0.76,
+        "f1_score": 0.7958,
+        "support": 100
+      },
+      "PANTUN AGAMA DAN KEPERCAYAAN": {
+        "precision": 0.8462,
+        "recall": 0.3056,
+        "f1_score": 0.449,
+        "support": 36
+      },
+      "PANTUN BUDI": {
+        "precision": 0.5806,
+        "recall": 0.439,
+        "f1_score": 0.5,
+        "support": 41
+      },
+      "PANTUN JENAKA DAN PERMAINAN": {
+        "precision": 0.5217,
+        "recall": 0.2264,
+        "f1_score": 0.3158,
+        "support": 53
+      },
+      "PANTUN KEMBARA DAN PERANTAUAN": {
+        "precision": 0.5556,
+        "recall": 0.2,
+        "f1_score": 0.2941,
+        "support": 25
+      },
+      "PANTUN KEPAHLAWANAN": {
+        "precision": 0.5714,
+        "recall": 0.2353,
+        "f1_score": 0.3333,
+        "support": 34
+      },
+      "PANTUN KIAS DAN IBARAT": {
+        "precision": 0.451,
+        "recall": 0.3651,
+        "f1_score": 0.4035,
+        "support": 126
+      },
+      "PANTUN NASIHAT DAN PENDIDIKAN": {
+        "precision": 0.4895,
+        "recall": 0.7035,
+        "f1_score": 0.5773,
+        "support": 199
+      },
+      "PANTUN PERCINTAAN": {
+        "precision": 0.6436,
+        "recall": 0.5603,
+        "f1_score": 0.5991,
+        "support": 116
+      },
+      "PANTUN PERIBAHASA DAN PERBILANGAN": {
+        "precision": 0.5021,
+        "recall": 0.7219,
+        "f1_score": 0.5922,
+        "support": 169
+      },
+      "PANTUN TEKA-TEKI": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1_score": 0.0,
+        "support": 14
+      }
+    },
+    "confusion_matrix": [
+      [
+        76,
+        0,
+        1,
+        0,
+        0,
+        0,
+        1,
+        11,
+        5,
+        6,
+        0
+      ],
+      [
+        0,
+        11,
+        0,
+        0,
+        0,
+        0,
+        1,
+        17,
+        2,
+        5,
+        0
+      ],
+      [
+        3,
+        0,
+        18,
+        1,
+        0,
+        0,
+        2,
+        10,
+        1,
+        6,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        12,
+        1,
+        0,
+        3,
+        8,
+        5,
+        24,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        1,
+        5,
+        0,
+        6,
+        5,
+        8,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        1,
+        0,
+        8,
+        7,
+        13,
+        0,
+        5,
+        0
+      ],
+      [
+        2,
+        0,
+        1,
+        2,
+        0,
+        1,
+        46,
+        39,
+        5,
+        30,
+        0
+      ],
+      [
+        7,
+        2,
+        6,
+        0,
+        1,
+        3,
+        13,
+        140,
+        5,
+        22,
+        0
+      ],
+      [
+        3,
+        0,
+        1,
+        1,
+        2,
+        0,
+        10,
+        15,
+        65,
+        19,
+        0
+      ],
+      [
+        0,
+        0,
+        3,
+        5,
+        0,
+        2,
+        11,
+        21,
+        5,
+        122,
+        0
+      ],
+      [
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        2,
+        7,
+        0,
+        4,
+        0
+      ]
+    ]
+  },
+  "svm_70-30_pembayang": {
+    "metrics": {
+      "accuracy": 0.496,
+      "precision": 0.5623,
+      "recall": 0.496,
+      "f1_score": 0.4794,
+      "split": "70-30",
+      "use_pembayang": true,
+      "train_size": 6386,
+      "test_size": 2738,
+      "num_features": 10000
+    },
+    "per_class_metrics": {
+      "PANTUN ADAT DAN RESAM": {
+        "precision": 0.8715,
+        "recall": 0.7233,
+        "f1_score": 0.7905,
+        "support": 300
+      },
+      "PANTUN AGAMA DAN KEPERCAYAAN": {
+        "precision": 0.8788,
+        "recall": 0.271,
+        "f1_score": 0.4143,
+        "support": 107
+      },
+      "PANTUN BUDI": {
+        "precision": 0.7069,
+        "recall": 0.3306,
+        "f1_score": 0.4505,
+        "support": 124
+      },
+      "PANTUN JENAKA DAN PERMAINAN": {
+        "precision": 0.6136,
+        "recall": 0.172,
+        "f1_score": 0.2687,
+        "support": 157
+      },
+      "PANTUN KEMBARA DAN PERANTAUAN": {
+        "precision": 0.8,
+        "recall": 0.1053,
+        "f1_score": 0.186,
+        "support": 76
+      },
+      "PANTUN KEPAHLAWANAN": {
+        "precision": 0.9474,
+        "recall": 0.1748,
+        "f1_score": 0.2951,
+        "support": 103
+      },
+      "PANTUN KIAS DAN IBARAT": {
+        "precision": 0.4245,
+        "recall": 0.3122,
+        "f1_score": 0.3598,
+        "support": 378
+      },
+      "PANTUN NASIHAT DAN PENDIDIKAN": {
+        "precision": 0.4204,
+        "recall": 0.6695,
+        "f1_score": 0.5165,
+        "support": 596
+      },
+      "PANTUN PERCINTAAN": {
+        "precision": 0.5937,
+        "recall": 0.5389,
+        "f1_score": 0.565,
+        "support": 347
+      },
+      "PANTUN PERIBAHASA DAN PERBILANGAN": {
+        "precision": 0.4008,
+        "recall": 0.6161,
+        "f1_score": 0.4856,
+        "support": 508
+      },
+      "PANTUN TEKA-TEKI": {
+        "precision": 0.5,
+        "recall": 0.0238,
+        "f1_score": 0.0455,
+        "support": 42
+      }
+    },
+    "confusion_matrix": [
+      [
+        217,
+        0,
+        3,
+        0,
+        1,
+        0,
+        6,
+        42,
+        12,
+        19,
+        0
+      ],
+      [
+        1,
+        29,
+        0,
+        0,
+        0,
+        0,
+        4,
+        48,
+        6,
+        19,
+        0
+      ],
+      [
+        8,
+        0,
+        41,
+        1,
+        0,
+        0,
+        6,
+        35,
+        10,
+        23,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        27,
+        0,
+        0,
+        11,
+        38,
+        9,
+        72,
+        0
+      ],
+      [
+        2,
+        0,
+        1,
+        1,
+        8,
+        0,
+        5,
+        16,
+        25,
+        18,
+        0
+      ],
+      [
+        3,
+        0,
+        0,
+        2,
+        0,
+        18,
+        14,
+        35,
+        6,
+        25,
+        0
+      ],
+      [
+        4,
+        0,
+        0,
+        1,
+        0,
+        0,
+        118,
+        146,
+        16,
+        93,
+        0
+      ],
+      [
+        6,
+        1,
+        8,
+        4,
+        0,
+        1,
+        49,
+        399,
+        19,
+        109,
+        0
+      ],
+      [
+        8,
+        1,
+        0,
+        1,
+        1,
+        0,
+        22,
+        52,
+        187,
+        75,
+        0
+      ],
+      [
+        0,
+        2,
+        5,
+        7,
+        0,
+        0,
+        41,
+        115,
+        24,
+        313,
+        1
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        2,
+        23,
+        1,
+        15,
+        1
+      ]
+    ]
+  },
+  "svm_80-20_pembayang": {
+    "metrics": {
+      "accuracy": 0.5058,
+      "precision": 0.5628,
+      "recall": 0.5058,
+      "f1_score": 0.4931,
+      "split": "80-20",
+      "use_pembayang": true,
+      "train_size": 7299,
+      "test_size": 1825,
+      "num_features": 10000
+    },
+    "per_class_metrics": {
+      "PANTUN ADAT DAN RESAM": {
+        "precision": 0.9114,
+        "recall": 0.72,
+        "f1_score": 0.8045,
+        "support": 200
+      },
+      "PANTUN AGAMA DAN KEPERCAYAAN": {
+        "precision": 0.8333,
+        "recall": 0.3472,
+        "f1_score": 0.4902,
+        "support": 72
+      },
+      "PANTUN BUDI": {
+        "precision": 0.7609,
+        "recall": 0.4217,
+        "f1_score": 0.5426,
+        "support": 83
+      },
+      "PANTUN JENAKA DAN PERMAINAN": {
+        "precision": 0.6176,
+        "recall": 0.2,
+        "f1_score": 0.3022,
+        "support": 105
+      },
+      "PANTUN KEMBARA DAN PERANTAUAN": {
+        "precision": 0.7778,
+        "recall": 0.14,
+        "f1_score": 0.2373,
+        "support": 50
+      },
+      "PANTUN KEPAHLAWANAN": {
+        "precision": 0.8571,
+        "recall": 0.1765,
+        "f1_score": 0.2927,
+        "support": 68
+      },
+      "PANTUN KIAS DAN IBARAT": {
+        "precision": 0.3949,
+        "recall": 0.3056,
+        "f1_score": 0.3445,
+        "support": 252
+      },
+      "PANTUN NASIHAT DAN PENDIDIKAN": {
+        "precision": 0.4405,
+        "recall": 0.6801,
+        "f1_score": 0.5347,
+        "support": 397
+      },
+      "PANTUN PERCINTAAN": {
+        "precision": 0.5806,
+        "recall": 0.5455,
+        "f1_score": 0.5625,
+        "support": 231
+      },
+      "PANTUN PERIBAHASA DAN PERBILANGAN": {
+        "precision": 0.4043,
+        "recall": 0.6047,
+        "f1_score": 0.4846,
+        "support": 339
+      },
+      "PANTUN TEKA-TEKI": {
+        "precision": 0.5,
+        "recall": 0.0357,
+        "f1_score": 0.0667,
+        "support": 28
+      }
+    },
+    "confusion_matrix": [
+      [
+        144,
+        0,
+        2,
+        0,
+        1,
+        0,
+        5,
+        24,
+        10,
+        14,
+        0
+      ],
+      [
+        0,
+        25,
+        0,
+        0,
+        0,
+        0,
+        3,
+        28,
+        3,
+        13,
+        0
+      ],
+      [
+        3,
+        0,
+        35,
+        1,
+        0,
+        0,
+        4,
+        20,
+        5,
+        15,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        21,
+        0,
+        0,
+        10,
+        19,
+        7,
+        48,
+        0
+      ],
+      [
+        1,
+        0,
+        1,
+        1,
+        7,
+        0,
+        1,
+        13,
+        19,
+        7,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        1,
+        0,
+        12,
+        8,
+        24,
+        3,
+        20,
+        0
+      ],
+      [
+        4,
+        0,
+        0,
+        1,
+        0,
+        1,
+        77,
+        96,
+        13,
+        60,
+        0
+      ],
+      [
+        3,
+        1,
+        3,
+        2,
+        0,
+        1,
+        37,
+        270,
+        11,
+        69,
+        0
+      ],
+      [
+        2,
+        1,
+        0,
+        1,
+        1,
+        0,
+        19,
+        37,
+        126,
+        44,
+        0
+      ],
+      [
+        1,
+        3,
+        5,
+        6,
+        0,
+        0,
+        29,
+        70,
+        19,
+        205,
+        1
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        2,
+        12,
+        1,
+        12,
+        1
+      ]
+    ]
+  },
+  "svm_90-10_pembayang": {
+    "metrics": {
+      "accuracy": 0.5246,
+      "precision": 0.5756,
+      "recall": 0.5246,
+      "f1_score": 0.5125,
+      "split": "90-10",
+      "use_pembayang": true,
+      "train_size": 8211,
+      "test_size": 913,
+      "num_features": 10000
+    },
+    "per_class_metrics": {
+      "PANTUN ADAT DAN RESAM": {
+        "precision": 0.95,
+        "recall": 0.76,
+        "f1_score": 0.8444,
+        "support": 100
+      },
+      "PANTUN AGAMA DAN KEPERCAYAAN": {
+        "precision": 0.9375,
+        "recall": 0.4167,
+        "f1_score": 0.5769,
+        "support": 36
+      },
+      "PANTUN BUDI": {
+        "precision": 0.75,
+        "recall": 0.3659,
+        "f1_score": 0.4918,
+        "support": 41
+      },
+      "PANTUN JENAKA DAN PERMAINAN": {
+        "precision": 0.5294,
+        "recall": 0.1698,
+        "f1_score": 0.2571,
+        "support": 53
+      },
+      "PANTUN KEMBARA DAN PERANTAUAN": {
+        "precision": 0.8571,
+        "recall": 0.24,
+        "f1_score": 0.375,
+        "support": 25
+      },
+      "PANTUN KEPAHLAWANAN": {
+        "precision": 0.8889,
+        "recall": 0.2353,
+        "f1_score": 0.3721,
+        "support": 34
+      },
+      "PANTUN KIAS DAN IBARAT": {
+        "precision": 0.4615,
+        "recall": 0.3333,
+        "f1_score": 0.3871,
+        "support": 126
+      },
+      "PANTUN NASIHAT DAN PENDIDIKAN": {
+        "precision": 0.4747,
+        "recall": 0.7085,
+        "f1_score": 0.5685,
+        "support": 199
+      },
+      "PANTUN PERCINTAAN": {
+        "precision": 0.57,
+        "recall": 0.4914,
+        "f1_score": 0.5278,
+        "support": 116
+      },
+      "PANTUN PERIBAHASA DAN PERBILANGAN": {
+        "precision": 0.4,
+        "recall": 0.6509,
+        "f1_score": 0.4955,
+        "support": 169
+      },
+      "PANTUN TEKA-TEKI": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1_score": 0.0,
+        "support": 14
+      }
+    },
+    "confusion_matrix": [
+      [
+        76,
+        0,
+        1,
+        0,
+        0,
+        0,
+        1,
+        7,
+        4,
+        11,
+        0
+      ],
+      [
+        0,
+        15,
+        0,
+        0,
+        0,
+        0,
+        2,
+        11,
+        1,
+        7,
+        0
+      ],
+      [
+        1,
+        0,
+        15,
+        1,
+        0,
+        0,
+        3,
+        6,
+        5,
+        10,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        9,
+        0,
+        0,
+        3,
+        10,
+        4,
+        27,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        1,
+        6,
+        0,
+        0,
+        4,
+        11,
+        3,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        1,
+        0,
+        8,
+        5,
+        16,
+        0,
+        4,
+        0
+      ],
+      [
+        1,
+        0,
+        0,
+        1,
+        0,
+        0,
+        42,
+        47,
+        5,
+        30,
+        0
+      ],
+      [
+        1,
+        0,
+        1,
+        0,
+        0,
+        1,
+        13,
+        141,
+        6,
+        36,
+        0
+      ],
+      [
+        1,
+        0,
+        0,
+        1,
+        1,
+        0,
+        10,
+        18,
+        57,
+        28,
+        0
+      ],
+      [
+        0,
+        1,
+        3,
+        3,
+        0,
+        0,
+        11,
+        33,
+        7,
+        110,
+        1
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        4,
+        0,
+        9,
+        0
+      ]
+    ]
+  }
+}

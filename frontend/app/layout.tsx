@@ -13,9 +13,14 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ms" suppressHydrationWarning>
-      <body>
+      <body style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
         <div className="bg-pattern" />
-        {children}
+        <div style={{ flex: 1 }}>
+          {children}
+        </div>
+        <footer className="footer">
+          <p>&copy; 2026 Owned by <span>AbeFiwanExpertStudio</span>. Hak Cipta Terpelihara.</p>
+        </footer>
       </body>
     </html>
   );

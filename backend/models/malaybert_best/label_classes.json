@@ -1,0 +1,18 @@
+{
+  "classes": [
+    "PANTUN ADAT DAN RESAM",
+    "PANTUN AGAMA DAN KEPERCAYAAN",
+    "PANTUN BUDI",
+    "PANTUN JENAKA DAN PERMAINAN",
+    "PANTUN KEMBARA DAN PERANTAUAN",
+    "PANTUN KEPAHLAWANAN",
+    "PANTUN KIAS DAN IBARAT",
+    "PANTUN NASIHAT DAN PENDIDIKAN",
+    "PANTUN PERCINTAAN",
+    "PANTUN PERIBAHASA DAN PERBILANGAN",
+    "PANTUN TEKA-TEKI"
+  ],
+  "use_pembayang": false,
+  "max_len": 128,
+  "model_name": "mesolitica/bert-base-standard-bahasa-cased"
+}

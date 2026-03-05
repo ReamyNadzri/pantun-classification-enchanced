@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
+import Link from "next/link";
 
 // Types
 interface Prediction {
@@ -37,60 +38,37 @@ interface ClassifyResponse {
   preprocessing_steps?: PreprocessingSteps;
 }
 
-interface ModelInfo {
-  key: string;
-  type: string;
-  metrics: {
-    accuracy?: number;
-    precision?: number;
-    recall?: number;
-    f1_score?: number;
-    split?: string;
-  };
-}
+// Hardcoded for UI simplicity as requested
+const AVAILABLE_MODELS = [
+  { id: "textcnn", name: "TextCNN (Deep Learning)" },
+  { id: "svm_90-10_no_pembayang", name: "SVM 90/10 (Machine Learning)" },
+  { id: "malaybert", name: "MalayBERT (Transformer)" },
+];
 
-// API base URL
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "";
 
 export default function Home() {
   // Input state
+  const [inputMode, setInputMode] = useState<"4-lines" | "1-line">("4-lines");
   const [lines, setLines] = useState(["", "", "", ""]);
+  const [singleLineInput, setSingleLineInput] = useState("");
 
   // Settings
-  const [usePembayang, setUsePembayang] = useState(false);
-  const [selectedModel, setSelectedModel] = useState("");
+  const [selectedModels, setSelectedModels] = useState<string[]>(["textcnn", "svm_90-10_no_pembayang", "malaybert"]);
+  const [isDarkMode, setIsDarkMode] = useState(true);
+
+  // Advanced Settings
+  const [settingsOpen, setSettingsOpen] = useState(false);
   const [topK, setTopK] = useState(3);
   const [showSteps, setShowSteps] = useState(false);
   const [confidenceThreshold, setConfidenceThreshold] = useState(20);
-  const [relatedCount, setRelatedCount] = useState(5);
-  const [splitRatio, setSplitRatio] = useState("90-10");
-  const [isDarkMode, setIsDarkMode] = useState(true);
+  const [relatedCount, setRelatedCount] = useState(0);
 
   // Results
-  const [result, setResult] = useState<ClassifyResponse | null>(null);
+  // Keyed by model ID
+  const [results, setResults] = useState<Record<string, ClassifyResponse>>({});
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
-
-  // Available models
-  const [availableModels, setAvailableModels] = useState<ModelInfo[]>([]);
-  const [settingsOpen, setSettingsOpen] = useState(false);
-
-  // Load available models on mount
-  useEffect(() => {
-    fetch(`${API_URL}/api/models`)
-      .then((res) => res.json())
-      .then((data) => {
-        setAvailableModels(data.models || []);
-        if (data.models?.length > 0) {
-          // Default to best model
-          const bestModel = data.models.find(
-            (m: ModelInfo) => m.key.includes("90-10") && m.key.includes("no_pembayang")
-          );
-          setSelectedModel(bestModel?.key || data.models[0].key);
-        }
-      })
-      .catch(() => { });
-  }, []);
 
   // Theme toggle
   useEffect(() => {
@@ -100,54 +78,77 @@ export default function Home() {
     );
   }, [isDarkMode]);
 
-  // Auto-select model based on settings
-  useEffect(() => {
-    const suffix = usePembayang ? "pembayang" : "no_pembayang";
-    const key = `svm_${splitRatio}_${suffix}`;
-    const exists = availableModels.find((m) => m.key === key);
-    if (exists) {
-      setSelectedModel(key);
-    }
-  }, [usePembayang, splitRatio, availableModels]);
-
   const handleLineChange = (index: number, value: string) => {
     const newLines = [...lines];
     newLines[index] = value;
     setLines(newLines);
   };
 
-  const isValid = lines.every((line) => line.trim().length > 0);
+  const toggleModelSelection = (modelId: string) => {
+    setSelectedModels(prev =>
+      prev.includes(modelId)
+        ? prev.filter(id => id !== modelId)
+        : [...prev, modelId]
+    );
+  };
+
+  const getPantunText = () => {
+    if (inputMode === "4-lines") {
+      return lines.join("; ");
+    }
+    return singleLineInput;
+  };
+
+  const isValid = inputMode === "4-lines"
+    ? lines.every((line) => line.trim().length > 0)
+    : singleLineInput.trim().length > 0;
 
   const handleClassify = useCallback(async () => {
-    if (!isValid) return;
+    if (!isValid || selectedModels.length === 0) return;
 
     setIsLoading(true);
     setError("");
-    setResult(null);
+    setResults({});
 
-    const pantunText = lines.join("; ");
+    const pantunText = getPantunText();
 
     try {
-      const response = await fetch(`${API_URL}/api/classify`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          pantun: pantunText,
-          model: selectedModel,
-          use_pembayang: usePembayang,
-          top_k: topK,
-          show_steps: showSteps,
-          related_count: relatedCount,
-          confidence_threshold: confidenceThreshold,
-        }),
+      const fetchPromises = selectedModels.map(async (modelId) => {
+        const response = await fetch(`${API_URL}/api/classify`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            pantun: pantunText,
+            model: modelId,
+            use_pembayang: false,
+            top_k: topK,
+            show_steps: showSteps,
+            related_count: relatedCount,
+            confidence_threshold: confidenceThreshold,
+          }),
+        });
+
+        if (!response.ok) {
+          throw new Error(`API error from ${modelId}: ${response.status}`);
+        }
+
+        const data: ClassifyResponse = await response.json();
+        return { modelId, data };
       });
 
-      if (!response.ok) {
-        throw new Error(`API error: ${response.status}`);
-      }
+      const settledResults = await Promise.allSettled(fetchPromises);
 
-      const data: ClassifyResponse = await response.json();
-      setResult(data);
+      const newResults: Record<string, ClassifyResponse> = {};
+      settledResults.forEach((result) => {
+        if (result.status === "fulfilled") {
+          newResults[result.value.modelId] = result.value.data;
+        } else {
+          console.error(result.reason);
+          setError("Terdapat ralat pada salah satu model. Sila cuba lagi.");
+        }
+      });
+
+      setResults(newResults);
     } catch (err) {
       setError(
         err instanceof Error
@@ -157,59 +158,119 @@ export default function Home() {
     } finally {
       setIsLoading(false);
     }
-  }, [lines, isValid, selectedModel, usePembayang, topK, showSteps, relatedCount, confidenceThreshold]);
+  }, [lines, singleLineInput, inputMode, isValid, selectedModels, topK, showSteps, relatedCount, confidenceThreshold]);
 
   const handleClear = () => {
     setLines(["", "", "", ""]);
-    setResult(null);
+    setSingleLineInput("");
+    setResults({});
     setError("");
-  };
-
-  const getModelMetrics = () => {
-    const model = availableModels.find((m) => m.key === selectedModel);
-    return model?.metrics || {};
   };
 
   return (
     <>
-      {/* Header */}
       <header className="header">
         <div className="container header-content">
-          <div className="logo">
-            <span className="logo-icon">🪻</span>
-            <div>
-              <h1>Klasifikasi Pantun</h1>
-              <span className="logo-subtitle">SVM Theme Classifier</span>
+          <Link href="/" style={{ textDecoration: 'none' }}>
+            <div className="logo cursor-pointer">
+              <span className="logo-icon">🪻</span>
+              <div>
+                <h1>Klasifikasi Pantun</h1>
+                <span className="logo-subtitle">Mengenal Pasti Tema Pantun</span>
+              </div>
             </div>
+          </Link>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
+            <Link href="/" className="nav-link active">Klasifikasi</Link>
+            <Link href="/insights" className="nav-link">Insights</Link>
+            <button
+              className="theme-toggle-btn"
+              onClick={() => setIsDarkMode(!isDarkMode)}
+              title={isDarkMode ? "Light Mode" : "Dark Mode"}
+            >
+              {isDarkMode ? "☀️" : "🌙"}
+            </button>
           </div>
-          <button
-            className="theme-toggle-btn"
-            onClick={() => setIsDarkMode(!isDarkMode)}
-            title={isDarkMode ? "Light Mode" : "Dark Mode"}
-          >
-            {isDarkMode ? "☀️" : "🌙"}
-          </button>
         </div>
       </header>
 
       <main>
         <div className="container">
-          {/* Hero */}
-          <section className="hero">
-            <h2>Klasifikasi Tema Pantun Melayu</h2>
+          <section className="hero" style={{ paddingBottom: '1rem' }}>
+            <h2>Klasifikasi Berbilang Model AI</h2>
             <p>
-              Masukkan empat baris pantun anda untuk mengenal pasti tema menggunakan
-              algoritma Support Vector Machine (SVM).
+              Pilih model di bawah. Bandingkan bagaimana Deep Learning, Machine Learning, dan Transformer berfikir.
             </p>
           </section>
 
-          {/* Main Grid */}
-          <div className="main-grid">
-            {/* Left Column - Input */}
-            <div>
-              {/* Pantun Input Card */}
-              <div className="card">
-                <h3 className="card-title">✍️ Masukkan Pantun</h3>
+          <div style={{ maxWidth: '1000px', margin: '0 auto' }}>
+
+            {/* Model Selection Containers */}
+            <div style={{ display: 'flex', gap: '1rem', marginBottom: '2rem', flexWrap: 'wrap', justifyContent: 'center' }}>
+              {AVAILABLE_MODELS.map(model => {
+                const isSelected = selectedModels.includes(model.id);
+                return (
+                  <div
+                    key={model.id}
+                    onClick={() => toggleModelSelection(model.id)}
+                    style={{
+                      flex: '1 1 250px',
+                      padding: '1rem',
+                      borderRadius: 'var(--radius-md)',
+                      background: isSelected ? 'var(--bg-tertiary)' : 'var(--bg-card)',
+                      border: `2px solid ${isSelected ? 'var(--primary)' : 'var(--border)'}`,
+                      cursor: 'pointer',
+                      transition: 'var(--transition)',
+                      textAlign: 'center',
+                      boxShadow: isSelected ? '0 0 15px var(--primary-glow)' : 'var(--shadow-sm)'
+                    }}
+                  >
+                    <div style={{
+                      width: '24px', height: '24px', borderRadius: '50%',
+                      background: isSelected ? 'var(--primary)' : 'transparent',
+                      border: `2px solid ${isSelected ? 'var(--primary)' : 'var(--text-muted)'}`,
+                      margin: '0 auto 0.5rem',
+                      display: 'flex', alignItems: 'center', justifyContent: 'center'
+                    }}>
+                      {isSelected && <span style={{ color: 'white', fontSize: '12px' }}>✓</span>}
+                    </div>
+                    <span style={{ fontWeight: 600, color: isSelected ? 'var(--primary-light)' : 'var(--text-primary)' }}>
+                      {model.name}
+                    </span>
+                  </div>
+                )
+              })}
+            </div>
+
+            {/* Input Section */}
+            <div className="card" style={{ marginBottom: '2rem' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.25rem' }}>
+                <h3 className="card-title" style={{ marginBottom: 0 }}>✍️ Masukkan Pantun</h3>
+
+                {/* Mode Toggle Tabs */}
+                <div style={{ display: 'flex', background: 'var(--bg-tertiary)', borderRadius: 'var(--radius-sm)', padding: '0.25rem' }}>
+                  <button
+                    onClick={() => setInputMode('4-lines')}
+                    style={{
+                      padding: '0.4rem 1rem', border: 'none', borderRadius: 'var(--radius-sm)',
+                      background: inputMode === '4-lines' ? 'var(--primary)' : 'transparent',
+                      color: inputMode === '4-lines' ? 'white' : 'var(--text-secondary)',
+                      cursor: 'pointer', fontWeight: 600, fontSize: '0.85rem', transition: '0.2s'
+                    }}
+                  >4 Baris</button>
+                  <button
+                    onClick={() => setInputMode('1-line')}
+                    style={{
+                      padding: '0.4rem 1rem', border: 'none', borderRadius: 'var(--radius-sm)',
+                      background: inputMode === '1-line' ? 'var(--primary)' : 'transparent',
+                      color: inputMode === '1-line' ? 'white' : 'var(--text-secondary)',
+                      cursor: 'pointer', fontWeight: 600, fontSize: '0.85rem', transition: '0.2s'
+                    }}
+                  >Teks Penuh</button>
+                </div>
+              </div>
+
+              {inputMode === "4-lines" ? (
                 <div className="pantun-input-group">
                   {lines.map((line, index) => (
                     <div className="line-input-wrapper" key={index}>
@@ -220,13 +281,10 @@ export default function Home() {
                         type="text"
                         className={`line-input ${index < 2 ? "pembayang" : "maksud"}`}
                         placeholder={
-                          index === 0
-                            ? "Baris pertama (pembayang)..."
-                            : index === 1
-                              ? "Baris kedua (pembayang)..."
-                              : index === 2
-                                ? "Baris ketiga (maksud)..."
-                                : "Baris keempat (maksud)..."
+                          index === 0 ? "Baris pertama (pembayang)..." :
+                            index === 1 ? "Baris kedua (pembayang)..." :
+                              index === 2 ? "Baris ketiga (maksud)..." :
+                                "Baris keempat (maksud)..."
                         }
                         value={line}
                         onChange={(e) => handleLineChange(index, e.target.value)}
@@ -237,326 +295,240 @@ export default function Home() {
                     </div>
                   ))}
                 </div>
+              ) : (
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                  <textarea
+                    className="line-input"
+                    style={{ minHeight: '150px', resize: 'vertical' }}
+                    placeholder={`Contoh:\nPulau pandan jauh ke tengah,\nGunung Daik bercabang tiga;\nHancur badan dikandung tanah,\nBudi yang baik dikenang juga.`}
+                    value={singleLineInput}
+                    onChange={(e) => setSingleLineInput(e.target.value)}
+                  />
+                  <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                    <span style={{ color: 'var(--accent)' }}>💡 Peringatan:</span>
+                    Pastikan anda memisahkan hujung ayat menggunakan koma ( , ) atau semikolon ( ; ) atau enter ( baris baru ).
+                  </div>
+                </div>
+              )}
 
-                {/* Buttons */}
-                <div className="btn-group">
-                  <button
-                    className="btn btn-primary"
-                    onClick={handleClassify}
-                    disabled={!isValid || isLoading}
-                  >
-                    {isLoading ? (
-                      <>
-                        <span className="spinner" /> Mengklasifikasi...
-                      </>
-                    ) : (
-                      <>🔍 Klasifikasi</>
-                    )}
-                  </button>
-                  <button className="btn btn-secondary" onClick={handleClear}>
-                    🗑️ Padam
-                  </button>
-                  <button
-                    className="btn btn-secondary"
-                    onClick={() => setSettingsOpen(!settingsOpen)}
-                  >
-                    ⚙️ Tetapan
-                  </button>
+              {/* Buttons */}
+              <div className="btn-group" style={{ flexDirection: 'row', marginTop: '1.5rem' }}>
+                <button
+                  className="btn btn-primary"
+                  onClick={handleClassify}
+                  disabled={!isValid || selectedModels.length === 0 || isLoading}
+                  style={{ flex: 1 }}
+                >
+                  {isLoading ? (
+                    <><span className="spinner" /> Sedang Menilai...</>
+                  ) : (
+                    <>🔍 Nilai Menggunakan {selectedModels.length} Model</>
+                  )}
+                </button>
+                <button className="btn btn-secondary" onClick={handleClear}>
+                  🗑️ Padam
+                </button>
+                <button
+                  className="btn btn-secondary"
+                  onClick={() => setSettingsOpen(!settingsOpen)}
+                >
+                  ⚙️ Tetapan
+                </button>
+              </div>
+            </div>
+
+            {/* Settings Card (collapsible) */}
+            {settingsOpen && (
+              <div className="card" style={{ marginBottom: "2rem" }}>
+                <h3 className="card-title">⚙️ Tetapan Klasifikasi Tambahan</h3>
+                <div className="settings-grid">
+                  {/* Show Preprocessing */}
+                  <div className="setting-item">
+                    <div className="toggle-wrapper">
+                      <span className="setting-label">🔍 Tunjuk Proses</span>
+                      <label className="toggle">
+                        <input
+                          type="checkbox"
+                          checked={showSteps}
+                          onChange={(e) => setShowSteps(e.target.checked)}
+                        />
+                        <span className="toggle-slider"></span>
+                      </label>
+                    </div>
+                  </div>
+
+                  {/* Top-K */}
+                  <div className="setting-item">
+                    <span className="setting-label">📊 Top-K Ramalan</span>
+                    <select
+                      className="setting-select"
+                      value={topK}
+                      onChange={(e) => setTopK(Number(e.target.value))}
+                    >
+                      <option value={1}>Top 1</option>
+                      <option value={3}>Top 3</option>
+                      <option value={5}>Top 5</option>
+                    </select>
+                  </div>
+
+                  {/* Related Count */}
+                  <div className="setting-item">
+                    <span className="setting-label">📚 Pantun Berkaitan</span>
+                    <select
+                      className="setting-select"
+                      value={relatedCount}
+                      onChange={(e) => setRelatedCount(Number(e.target.value))}
+                    >
+                      <option value={0}>Tiada</option>
+                      <option value={3}>3 pantun</option>
+                      <option value={5}>5 pantun</option>
+                      <option value={10}>10 pantun</option>
+                    </select>
+                  </div>
+
+                  {/* Confidence Threshold */}
+                  <div className="setting-item" style={{ gridColumn: "1 / -1" }}>
+                    <span className="setting-label">
+                      🎯 Ambang Keyakinan: {confidenceThreshold}%
+                    </span>
+                    <input
+                      type="range"
+                      className="setting-range"
+                      min={0}
+                      max={80}
+                      step={5}
+                      value={confidenceThreshold}
+                      onChange={(e) =>
+                        setConfidenceThreshold(Number(e.target.value))
+                      }
+                    />
+                  </div>
                 </div>
               </div>
+            )}
 
-              {/* Settings Card (collapsible) */}
-              {settingsOpen && (
-                <div className="card" style={{ marginTop: "1rem" }}>
-                  <h3 className="card-title">⚙️ Tetapan Klasifikasi</h3>
-                  <div className="settings-grid">
-                    {/* Model Selector */}
-                    <div className="setting-item">
-                      <span className="setting-label">🔀 Model</span>
-                      <select
-                        className="setting-select"
-                        value={selectedModel}
-                        onChange={(e) => setSelectedModel(e.target.value)}
-                      >
-                        {availableModels.map((m) => (
-                          <option key={m.key} value={m.key}>
-                            {m.key} ({((m.metrics.f1_score || 0) * 100).toFixed(1)}% F1)
-                          </option>
-                        ))}
-                      </select>
-                    </div>
+            {/* Error Message */}
+            {error && (
+              <div
+                className="card"
+                style={{
+                  borderColor: "rgba(239, 68, 68, 0.3)",
+                  marginBottom: "1rem",
+                }}
+              >
+                <h3 className="card-title" style={{ color: "#ef4444" }}>❌ Ralat</h3>
+                <p style={{ color: "var(--text-secondary)" }}>{error}</p>
+              </div>
+            )}
 
-                    {/* Split Ratio */}
-                    <div className="setting-item">
-                      <span className="setting-label">📈 Nisbah Data</span>
-                      <select
-                        className="setting-select"
-                        value={splitRatio}
-                        onChange={(e) => setSplitRatio(e.target.value)}
-                      >
-                        <option value="70-30">70% Latihan - 30% Ujian</option>
-                        <option value="80-20">80% Latihan - 20% Ujian</option>
-                        <option value="90-10">90% Latihan - 10% Ujian</option>
-                      </select>
-                    </div>
+            {/* Multi-Model Results Output */}
+            {Object.keys(results).length > 0 && (
+              <div style={{
+                display: 'grid',
+                gridTemplateColumns: `repeat(auto-fit, minmax(280px, 1fr))`,
+                gap: '1rem'
+              }}>
+                {AVAILABLE_MODELS.map(model => {
+                  const modelResult = results[model.id];
+                  if (!modelResult) return null;
 
-                    {/* Pembayang Toggle */}
-                    <div className="setting-item">
-                      <div className="toggle-wrapper">
-                        <span className="setting-label">🔧 Guna Pembayang</span>
-                        <label className="toggle">
-                          <input
-                            type="checkbox"
-                            checked={usePembayang}
-                            onChange={(e) => setUsePembayang(e.target.checked)}
-                          />
-                          <span className="toggle-slider"></span>
-                        </label>
+                  return (
+                    <div className="card" key={model.id}>
+                      <div style={{
+                        fontSize: '0.85rem',
+                        fontWeight: 600,
+                        color: 'var(--text-muted)',
+                        textTransform: 'uppercase',
+                        letterSpacing: '0.5px',
+                        marginBottom: '1rem',
+                        borderBottom: '1px solid var(--border)',
+                        paddingBottom: '0.5rem'
+                      }}>
+                        {model.name}
                       </div>
-                    </div>
 
-                    {/* Show Preprocessing */}
-                    <div className="setting-item">
-                      <div className="toggle-wrapper">
-                        <span className="setting-label">🔍 Tunjuk Proses</span>
-                        <label className="toggle">
-                          <input
-                            type="checkbox"
-                            checked={showSteps}
-                            onChange={(e) => setShowSteps(e.target.checked)}
-                          />
-                          <span className="toggle-slider"></span>
-                        </label>
-                      </div>
-                    </div>
-
-                    {/* Top-K */}
-                    <div className="setting-item">
-                      <span className="setting-label">📊 Top-K Ramalan</span>
-                      <select
-                        className="setting-select"
-                        value={topK}
-                        onChange={(e) => setTopK(Number(e.target.value))}
-                      >
-                        <option value={1}>Top 1</option>
-                        <option value={3}>Top 3</option>
-                        <option value={5}>Top 5</option>
-                      </select>
-                    </div>
-
-                    {/* Related Count */}
-                    <div className="setting-item">
-                      <span className="setting-label">📚 Pantun Berkaitan</span>
-                      <select
-                        className="setting-select"
-                        value={relatedCount}
-                        onChange={(e) => setRelatedCount(Number(e.target.value))}
-                      >
-                        <option value={0}>Tiada</option>
-                        <option value={3}>3 pantun</option>
-                        <option value={5}>5 pantun</option>
-                        <option value={10}>10 pantun</option>
-                      </select>
-                    </div>
-
-                    {/* Confidence Threshold */}
-                    <div className="setting-item" style={{ gridColumn: "1 / -1" }}>
-                      <span className="setting-label">
-                        🎯 Ambang Keyakinan: {confidenceThreshold}%
-                      </span>
-                      <input
-                        type="range"
-                        className="setting-range"
-                        min={0}
-                        max={80}
-                        step={5}
-                        value={confidenceThreshold}
-                        onChange={(e) =>
-                          setConfidenceThreshold(Number(e.target.value))
-                        }
-                      />
-                    </div>
-                  </div>
-
-                  {/* Current Model Metrics */}
-                  {selectedModel && (
-                    <div style={{ marginTop: "1.25rem" }}>
-                      <span
-                        className="setting-label"
-                        style={{ marginBottom: "0.5rem", display: "block" }}
-                      >
-                        📋 Prestasi Model Semasa
-                      </span>
-                      <div className="metrics-grid">
-                        <div className="metric-card">
-                          <div className="metric-value">
-                            {((getModelMetrics().accuracy || 0) * 100).toFixed(1)}%
-                          </div>
-                          <div className="metric-label">Accuracy</div>
-                        </div>
-                        <div className="metric-card">
-                          <div className="metric-value">
-                            {((getModelMetrics().precision || 0) * 100).toFixed(1)}%
-                          </div>
-                          <div className="metric-label">Precision</div>
-                        </div>
-                        <div className="metric-card">
-                          <div className="metric-value">
-                            {((getModelMetrics().recall || 0) * 100).toFixed(1)}%
-                          </div>
-                          <div className="metric-label">Recall</div>
-                        </div>
-                        <div className="metric-card">
-                          <div className="metric-value">
-                            {((getModelMetrics().f1_score || 0) * 100).toFixed(1)}%
-                          </div>
-                          <div className="metric-label">F1-Score</div>
-                        </div>
-                      </div>
-                    </div>
-                  )}
-                </div>
-              )}
-            </div>
-
-            {/* Right Column - Results */}
-            <div>
-              {/* Error */}
-              {error && (
-                <div
-                  className="card"
-                  style={{
-                    borderColor: "rgba(239, 68, 68, 0.3)",
-                    marginBottom: "1rem",
-                  }}
-                >
-                  <h3 className="card-title" style={{ color: "#ef4444" }}>
-                    ❌ Ralat
-                  </h3>
-                  <p style={{ color: "var(--text-secondary)" }}>{error}</p>
-                </div>
-              )}
-
-              {/* Result */}
-              {result && (
-                <div className="result-section">
-                  {/* Top Prediction */}
-                  <div className="card" style={{ marginBottom: "1rem" }}>
-                    <h3 className="card-title">🎯 Keputusan Klasifikasi</h3>
-                    <div style={{ textAlign: "center", margin: "1rem 0" }}>
-                      <span
-                        className={`theme-badge ${result.top_prediction.is_uncertain ? "uncertain" : ""
-                          }`}
-                      >
-                        {result.top_prediction.is_uncertain
-                          ? "⚠️ Tidak Pasti"
-                          : `🏷️ ${result.top_prediction.theme}`}
-                      </span>
-                    </div>
-
-                    {/* Confidence Bar */}
-                    <div className="confidence-bar-container">
-                      <div className="confidence-text">
-                        <span>Keyakinan</span>
-                        <span style={{ fontWeight: 600 }}>
-                          {result.top_prediction.confidence.toFixed(1)}%
+                      <div style={{ textAlign: "center", margin: "1rem 0" }}>
+                        <span
+                          className={`theme-badge ${modelResult.top_prediction.is_uncertain ? "uncertain" : ""
+                            }`}
+                        >
+                          {modelResult.top_prediction.is_uncertain
+                            ? "⚠️ Tidak Pasti"
+                            : `🏷️ ${modelResult.top_prediction.theme}`}
                         </span>
                       </div>
-                      <div className="confidence-bar">
-                        <div
-                          className="confidence-bar-fill"
-                          style={{
-                            width: `${result.top_prediction.confidence}%`,
-                          }}
-                        />
+
+                      <div className="confidence-bar-container">
+                        <div className="confidence-text">
+                          <span>Keyakinan</span>
+                          <span style={{ fontWeight: 600 }}>
+                            {modelResult.top_prediction.confidence.toFixed(1)}%
+                          </span>
+                        </div>
+                        <div className="confidence-bar">
+                          <div
+                            className="confidence-bar-fill"
+                            style={{
+                              width: `${modelResult.top_prediction.confidence}%`,
+                            }}
+                          />
+                        </div>
                       </div>
-                    </div>
 
-                    {/* Model Info */}
-                    <div
-                      style={{
-                        marginTop: "1rem",
-                        fontSize: "0.8rem",
-                        color: "var(--text-muted)",
-                      }}
-                    >
-                      Model: <strong>{result.model_used}</strong> | Pembayang:{" "}
-                      <strong>{result.use_pembayang ? "ON" : "OFF"}</strong>
-                    </div>
-                  </div>
-
-                  {/* Top-K Predictions */}
-                  {result.predictions.length > 1 && (
-                    <div className="card" style={{ marginBottom: "1rem" }}>
-                      <h3 className="card-title">📊 Top Ramalan</h3>
-                      <div className="predictions-list">
-                        {result.predictions.map((pred, i) => (
-                          <div className="prediction-item" key={i}>
-                            <span className="theme-name">
-                              {i === 0 ? "🥇" : i === 1 ? "🥈" : i === 2 ? "🥉" : `#${i + 1}`}{" "}
-                              {pred.theme}
-                            </span>
-                            <span className="confidence">
-                              {pred.confidence.toFixed(1)}%
-                            </span>
+                      {/* Other Predictions */}
+                      <div style={{ marginTop: '1.5rem' }}>
+                        <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginBottom: '0.5rem' }}>Ramalan Lain:</div>
+                        {modelResult.predictions.slice(1).map((pred, i) => (
+                          <div key={i} style={{
+                            display: 'flex', justifyContent: 'space-between',
+                            fontSize: '0.85rem', padding: '0.25rem 0',
+                            color: 'var(--text-secondary)'
+                          }}>
+                            <span>{pred.theme}</span>
+                            <span style={{ fontWeight: 600 }}>{pred.confidence.toFixed(1)}%</span>
                           </div>
                         ))}
                       </div>
-                    </div>
-                  )}
 
-                  {/* Preprocessing Steps */}
-                  {result.preprocessing_steps && (
-                    <div className="card" style={{ marginBottom: "1rem" }}>
-                      <h3 className="card-title">🔬 Langkah Prapemprosesan</h3>
-                      <div className="steps-container">
-                        {Object.entries(result.preprocessing_steps).map(
-                          ([name, value]) => (
-                            <div className="step-item" key={name}>
-                              <div className="step-name">{name.replace(/_/g, " ")}</div>
-                              <div className="step-value">
-                                {Array.isArray(value)
-                                  ? value.join(" → ")
-                                  : String(value)}
+                      {/* Preprocessing Steps */}
+                      {showSteps && modelResult.preprocessing_steps && (
+                        <div style={{ marginTop: '1.5rem', paddingTop: '1rem', borderTop: '1px solid var(--border)' }}>
+                          <span style={{ fontSize: '0.8rem', fontWeight: 600, color: 'var(--text-muted)' }}>🔍 Langkah Pre-pemprosesan</span>
+                          <div style={{ background: 'var(--bg-tertiary)', padding: '0.75rem', borderRadius: 'var(--radius-sm)', marginTop: '0.5rem', fontSize: '0.8rem', color: 'var(--text-secondary)' }}>
+                            {Object.entries(modelResult.preprocessing_steps).map(([step, val]) => (
+                              <div key={step} style={{ marginBottom: '0.25rem' }}>
+                                <strong style={{ color: 'var(--primary-light)' }}>{step}:</strong> {Array.isArray(val) ? val.join(" → ") : String(val)}
                               </div>
-                            </div>
-                          )
-                        )}
-                      </div>
-                    </div>
-                  )}
-
-                  {/* Related Pantun */}
-                  {result.related_pantun && result.related_pantun.length > 0 && (
-                    <div className="card">
-                      <h3 className="card-title">
-                        📚 Pantun Berkaitan ({result.top_prediction.theme})
-                      </h3>
-                      <div className="related-pantun-list">
-                        {result.related_pantun.map((rp, i) => (
-                          <div className="related-pantun-item" key={i}>
-                            {rp.pantun}
+                            ))}
                           </div>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-                </div>
-              )}
+                        </div>
+                      )}
 
-              {/* Empty State */}
-              {!result && !error && !isLoading && (
-                <div className="card">
-                  <div className="empty-state">
-                    <div className="empty-state-icon">📝</div>
-                    <p>
-                      Masukkan pantun empat baris di sebelah kiri dan tekan
-                      &quot;Klasifikasi&quot; untuk melihat keputusan.
-                    </p>
-                  </div>
-                </div>
-              )}
-            </div>
+                      {/* Related Pantun */}
+                      {relatedCount > 0 && modelResult.related_pantun && modelResult.related_pantun.length > 0 && (
+                        <div style={{ marginTop: '1.5rem', paddingTop: '1rem', borderTop: '1px solid var(--border)' }}>
+                          <span style={{ fontSize: '0.8rem', fontWeight: 600, color: 'var(--text-muted)' }}>📚 Pantun Berkaitan ({modelResult.top_prediction.theme})</span>
+                          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', marginTop: '0.5rem' }}>
+                            {modelResult.related_pantun.map((rp, i) => (
+                              <div key={i} style={{
+                                background: 'var(--bg-tertiary)', padding: '0.75rem',
+                                borderRadius: 'var(--radius-sm)', fontSize: '0.85rem',
+                                color: 'var(--text-secondary)', borderLeft: '2px solid var(--accent)',
+                                whiteSpace: 'pre-wrap', fontStyle: 'italic'
+                              }}>
+                                {rp.pantun.split("; ").join("\n")}
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+
+                    </div>
+                  );
+                })}
+              </div>
+            )}
+
           </div>
         </div>
       </main>

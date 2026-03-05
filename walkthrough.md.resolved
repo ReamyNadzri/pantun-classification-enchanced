@@ -1,0 +1,103 @@
+# Malay Pantun Classification System — Walkthrough
+
+## What Was Built
+
+A full-stack **Malay Pantun Theme Classification System** using SVM that classifies pantun into 11 themes. The system follows the methodology from the research paper (Chapter 3).
+
+### Architecture
+```
+frontend/ (Next.js + TypeScript)  →  backend/ (Flask + SVM)
+   Port 3000                           Port 5000
+```
+
+---
+
+## Data Cleaning
+
+Processed **7 raw Excel files** (7,376 pantun) with 108 different theme names, mapped to **11 standardized themes**, merged with existing [pantun_cleaned_v2.json](file:///c:/Users/rahim/pantun-classification-enchanced/pantun_cleaned_v2.json), and deduplicated.
+
+**Final dataset**: [pantun_dataset.json](file:///c:/Users/rahim/pantun-classification-enchanced/pantun_dataset.json) — **9,124 pantun**
+
+| Theme | Count |
+|---|---|
+| PANTUN NASIHAT DAN PENDIDIKAN | 1,987 |
+| PANTUN PERIBAHASA DAN PERBILANGAN | 1,692 |
+| PANTUN KIAS DAN IBARAT | 1,261 |
+| PANTUN PERCINTAAN | 1,155 |
+| PANTUN ADAT DAN RESAM | 999 |
+| PANTUN JENAKA DAN PERMAINAN | 525 |
+| PANTUN BUDI | 413 |
+| PANTUN AGAMA DAN KEPERCAYAAN | 358 |
+| PANTUN KEPAHLAWANAN | 342 |
+| PANTUN KEMBARA DAN PERANTAUAN | 252 |
+| PANTUN TEKA-TEKI | 141 |
+
+---
+
+## SVM Model Training
+
+Trained **6 models** (3 data splits × 2 pembayang settings):
+
+| Model | Accuracy | F1-Score |
+|---|---|---|
+| svm_90-10_no_pembayang ⭐ | 55.1% | 0.533 |
+| svm_80-20_no_pembayang | 53.0% | 0.516 |
+| svm_90-10_pembayang | 52.5% | 0.513 |
+| svm_80-20_pembayang | 50.6% | 0.493 |
+| svm_70-30_no_pembayang | 51.9% | 0.501 |
+| svm_70-30_pembayang | 49.6% | 0.479 |
+
+> [!NOTE]
+> Without pembayang consistently outperforms with pembayang, validating the Chapter 3 methodology that theme meaning resides in the maksud (lines 3-4). TextCNN and MalayBERT (via Google Colab) are expected to significantly improve these scores.
+
+---
+
+## Frontend UI
+
+````carousel
+![Initial page — Premium dark glassmorphism design with 4-line input](/C:/Users/rahim/.gemini/antigravity/brain/7c143f3c-efc8-4475-8429-db5615bdba22/initial_page_load_1772662242950.png)
+<!-- slide -->
+![Classification result — PANTUN ADAT DAN RESAM at 98.6% confidence](/C:/Users/rahim/.gemini/antigravity/brain/7c143f3c-efc8-4475-8429-db5615bdba22/final_result_verification_1772663532287.png)
+````
+
+### UI Features
+- **4-line pantun input** with PEMB/MAKS labels and green/gray border distinction
+- **Settings panel** with 8 configurable features
+- **Classification result** with theme badge, confidence bar, top-K ramalan
+- **Related pantun** display from dataset
+- **Dark/Light mode** toggle
+
+---
+
+## Verification Results
+
+| Test | Result |
+|---|---|
+| API classify endpoint | ✅ Returns PANTUN ADAT DAN RESAM (98.6%) |
+| Frontend loads | ✅ Clean, responsive UI |
+| End-to-end flow | ✅ Input → Classify → Results |
+| Settings panel | ✅ All 8 features functional |
+| Model selection | ✅ 6 models selectable |
+
+---
+
+## How to Run
+
+```bash
+# Terminal 1: Start Flask backend
+cd backend
+python app.py
+
+# Terminal 2: Start Next.js frontend
+cd frontend
+npm run dev
+```
+
+Open **http://localhost:3000**
+
+---
+
+## Next Steps
+- Train **TextCNN** and **MalayBERT** on Google Colab
+- Download trained models to `backend/models/`
+- Add model comparison dashboard

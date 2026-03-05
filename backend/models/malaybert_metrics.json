@@ -1,0 +1,12 @@
+{
+  "accuracy": 0.5969331872946331,
+  "f1_score": 0.5954920756486783,
+  "use_pembayang": false,
+  "model_type": "MalayBERT",
+  "base_model": "mesolitica/bert-base-standard-bahasa-cased",
+  "max_len": 128,
+  "num_epochs": 10,
+  "best_epoch_f1": 0.5954920756486783,
+  "batch_size": 16,
+  "learning_rate": 2e-05
+}

@@ -1,0 +1,348 @@
+Running...
+  Done #21
+  Done #22
+  Done #23
+  Done #24
+  Done #25
+  Done #26
+  Done #27
+{
+  "results": [
+    {
+      "no": 21,
+      "pantun": "Makan sirih berpinang tidak, Pinang ada di bawah tangga; Makan sirih mengenyang tidak, Kerana budi dan bahasa.",
+      "models": {
+        "TextCNN": [
+          {
+            "confidence": 98.3,
+            "theme": "PANTUN BUDI"
+          },
+          {
+            "confidence": 0.62,
+            "theme": "PANTUN NASIHAT DAN PENDIDIKAN"
+          },
+          {
+            "confidence": 0.6,
+            "theme": "PANTUN KIAS DAN IBARAT"
+          }
+        ],
+        "MalayBERT": [
+          {
+            "confidence": 99.88,
+            "theme": "PANTUN BUDI"
+          },
+          {
+            "confidence": 0.04,
+            "theme": "PANTUN ADAT DAN RESAM"
+          },
+          {
+            "confidence": 0.02,
+            "theme": "PANTUN AGAMA DAN KEPERCAYAAN"
+          }
+        ],
+        "SVM 90/10": [
+          {
+            "confidence": 98.34,
+            "theme": "PANTUN BUDI"
+          },
+          {
+            "confidence": 0.46,
+            "theme": "PANTUN KIAS DAN IBARAT"
+          },
+          {
+            "confidence": 0.42,
+            "theme": "PANTUN PERIBAHASA DAN PERBILANGAN"
+          }
+        ]
+      }
+    },
+    {
+      "no": 22,
+      "pantun": "Kain bersuji di atas atap, Sudah dikelim baru dipakai; Kalau sudi tuanku santap, Sirihnya kering pinangnya kotai.",
+      "models": {
+        "TextCNN": [
+          {
+            "confidence": 83.89,
+            "theme": "PANTUN ADAT DAN RESAM"
+          },
+          {
+            "confidence": 12.89,
+            "theme": "PANTUN PERIBAHASA DAN PERBILANGAN"
+          },
+          {
+            "confidence": 2.15,
+            "theme": "PANTUN PERCINTAAN"
+          }
+        ],
+        "MalayBERT": [
+          {
+            "confidence": 99.93,
+            "theme": "PANTUN ADAT DAN RESAM"
+          },
+          {
+            "confidence": 0.01,
+            "theme": "PANTUN PERCINTAAN"
+          },
+          {
+            "confidence": 0.01,
+            "theme": "PANTUN BUDI"
+          }
+        ],
+        "SVM 90/10": [
+          {
+            "confidence": 91.83,
+            "theme": "PANTUN ADAT DAN RESAM"
+          },
+          {
+            "confidence": 2.36,
+            "theme": "PANTUN PERCINTAAN"
+          },
+          {
+            "confidence": 2.22,
+            "theme": "PANTUN KIAS DAN IBARAT"
+          }
+        ]
+      }
+    },
+    {
+      "no": 23,
+      "pantun": "Ada sirih ada pinang, Nanti gambir dengan kapur; Sudah dipilih sudah dipinang, Hanya menanti ijab kabul.",
+      "models": {
+        "TextCNN": [
+          {
+            "confidence": 84.75,
+            "theme": "PANTUN ADAT DAN RESAM"
+          },
+          {
+            "confidence": 7.23,
+            "theme": "PANTUN PERCINTAAN"
+          },
+          {
+            "confidence": 2.48,
+            "theme": "PANTUN NASIHAT DAN PENDIDIKAN"
+          }
+        ],
+        "MalayBERT": [
+          {
+            "confidence": 81.98,
+            "theme": "PANTUN PERCINTAAN"
+          },
+          {
+            "confidence": 14.1,
+            "theme": "PANTUN PERIBAHASA DAN PERBILANGAN"
+          },
+          {
+            "confidence": 2.6,
+            "theme": "PANTUN NASIHAT DAN PENDIDIKAN"
+          }
+        ],
+        "SVM 90/10": [
+          {
+            "confidence": 70.51,
+            "theme": "PANTUN ADAT DAN RESAM"
+          },
+          {
+            "confidence": 6.09,
+            "theme": "PANTUN NASIHAT DAN PENDIDIKAN"
+          },
+          {
+            "confidence": 5.56,
+            "theme": "PANTUN PERCINTAAN"
+          }
+        ]
+      }
+    },
+    {
+      "no": 24,
+      "pantun": "Ambil buluh di rumpun jering, Jering bersanggit dibatang pinang; Kalau jalak lawan biring, Belum tentu kalah menang.",
+      "models": {
+        "TextCNN": [
+          {
+            "confidence": 42.49,
+            "theme": "PANTUN KIAS DAN IBARAT"
+          },
+          {
+            "confidence": 17.45,
+            "theme": "PANTUN PERIBAHASA DAN PERBILANGAN"
+          },
+          {
+            "confidence": 17.15,
+            "theme": "PANTUN NASIHAT DAN PENDIDIKAN"
+          }
+        ],
+        "MalayBERT": [
+          {
+            "confidence": 99.88,
+            "theme": "PANTUN KEPAHLAWANAN"
+          },
+          {
+            "confidence": 0.04,
+            "theme": "PANTUN NASIHAT DAN PENDIDIKAN"
+          },
+          {
+            "confidence": 0.02,
+            "theme": "PANTUN KIAS DAN IBARAT"
+          }
+        ],
+        "SVM 90/10": [
+          {
+            "confidence": 29.28,
+            "theme": "PANTUN NASIHAT DAN PENDIDIKAN"
+          },
+          {
+            "confidence": 26.11,
+            "theme": "PANTUN PERIBAHASA DAN PERBILANGAN"
+          },
+          {
+            "confidence": 22.23,
+            "theme": "PANTUN KEPAHLAWANAN"
+          }
+        ]
+      }
+    },
+    {
+      "no": 25,
+      "pantun": "Apa guna pokok pinang, Daun hijau kuning padi; Apa diingat apa dikenang, Gunung dikejar takkan lari.",
+      "models": {
+        "TextCNN": [
+          {
+            "confidence": 41.58,
+            "theme": "PANTUN KIAS DAN IBARAT"
+          },
+          {
+            "confidence": 18.24,
+            "theme": "PANTUN ADAT DAN RESAM"
+          },
+          {
+            "confidence": 14.05,
+            "theme": "PANTUN KEPAHLAWANAN"
+          }
+        ],
+        "MalayBERT": [
+          {
+            "confidence": 97.98,
+            "theme": "PANTUN KIAS DAN IBARAT"
+          },
+          {
+            "confidence": 1.35,
+            "theme": "PANTUN KEPAHLAWANAN"
+          },
+          {
+            "confidence": 0.29,
+            "theme": "PANTUN NASIHAT DAN PENDIDIKAN"
+          }
+        ],
+        "SVM 90/10": [
+          {
+            "confidence": 37.27,
+            "theme": "PANTUN PERIBAHASA DAN PERBILANGAN"
+          },
+          {
+            "confidence": 25.97,
+            "theme": "PANTUN ADAT DAN RESAM"
+          },
+          {
+            "confidence": 13.33,
+            "theme": "PANTUN NASIHAT DAN PENDIDIKAN"
+          }
+        ]
+      }
+    },
+    {
+      "no": 26,
+      "pantun": "Bangun tidur lalu berenang, Naik rakit batang pinang; Habis tali sambung benang, Kumbang terbang bukan senang.",
+      "models": {
+        "TextCNN": [
+          {
+            "confidence": 68.26,
+            "theme": "PANTUN PERIBAHASA DAN PERBILANGAN"
+          },
+          {
+            "confidence": 19.62,
+            "theme": "PANTUN NASIHAT DAN PENDIDIKAN"
+          },
+          {
+            "confidence": 4.43,
+            "theme": "PANTUN PERCINTAAN"
+          }
+        ],
+        "MalayBERT": [
+          {
+            "confidence": 86.15,
+            "theme": "PANTUN PERIBAHASA DAN PERBILANGAN"
+          },
+          {
+            "confidence": 12.56,
+            "theme": "PANTUN PERCINTAAN"
+          },
+          {
+            "confidence": 0.51,
+            "theme": "PANTUN KIAS DAN IBARAT"
+          }
+        ],
+        "SVM 90/10": [
+          {
+            "confidence": 44.1,
+            "theme": "PANTUN PERIBAHASA DAN PERBILANGAN"
+          },
+          {
+            "confidence": 22.5,
+            "theme": "PANTUN PERCINTAAN"
+          },
+          {
+            "confidence": 9.67,
+            "theme": "PANTUN NASIHAT DAN PENDIDIKAN"
+          }
+        ]
+      }
+    },
+    {
+      "no": 27,
+      "pantun": "Hujan reda ribut berdengung, Tanam pinang di kaki tangga; Jangan dinda duduk termenung, Sapu tangan pengganti kanda.",
+      "models": {
+        "TextCNN": [
+          {
+            "confidence": 85.98,
+            "theme": "PANTUN PERCINTAAN"
+          },
+          {
+            "confidence": 7.95,
+            "theme": "PANTUN JENAKA DAN PERMAINAN"
+          },
+          {
+            "confidence": 1.88,
+            "theme": "PANTUN ADAT DAN RESAM"
+          }
+        ],
+        "MalayBERT": [
+          {
+            "confidence": 99.79,
+            "theme": "PANTUN PERCINTAAN"
+          },
+          {
+            "confidence": 0.06,
+            "theme": "PANTUN NASIHAT DAN PENDIDIKAN"
+          },
+          {
+            "confidence": 0.04,
+            "theme": "PANTUN PERIBAHASA DAN PERBILANGAN"
+          }
+        ],
+        "SVM 90/10": [
+          {
+            "confidence": 87.22,
+            "theme": "PANTUN PERCINTAAN"
+          },
+          {
+            "confidence": 3.84,
+            "theme": "PANTUN PERIBAHASA DAN PERBILANGAN"
+          },
+          {
+            "confidence": 2.02,
+            "theme": "PANTUN NASIHAT DAN PENDIDIKAN"
+          }
+        ]
+      }
+    }
+  ]
+}

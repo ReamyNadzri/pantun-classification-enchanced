@@ -1,0 +1,16 @@
+{
+  "accuracy": 0.4687842278203724,
+  "f1_score": 0.4615907203146792,
+  "use_pembayang": false,
+  "model_type": "TextCNN",
+  "embed_dim": 128,
+  "kernel_sizes": [
+    3,
+    4,
+    5
+  ],
+  "num_filters": 128,
+  "vocab_size": 3416,
+  "max_len": 30,
+  "num_epochs_trained": 23
+}

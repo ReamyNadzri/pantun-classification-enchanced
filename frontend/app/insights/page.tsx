@@ -65,7 +65,7 @@ export default function InsightsPage() {
                         </div>
 
                         <p style={{ color: 'var(--text-secondary)', marginBottom: '1rem' }}>
-                            <strong>Bagaimana ia berfungsi:</strong> Dibina di atas seni bina Transformer (<code style={{ color: 'var(--primary-light)' }}>mesolitica/bert-base-standard-bahasa-cased</code>), model ini tidak hanya mencari kata kunci tertentu. Ia membaca "keseluruhan konteks" pantun untuk memahami mesej atau niat penulis.
+                            <strong>Bagaimana ia berfungsi:</strong> Dibina di atas seni bina Transformer (<code style={{ color: 'var(--primary-light)' }}>mesolitica/bert-base-standard-bahasa-cased</code>), model ini tidak hanya mencari kata kunci tertentu. Ia membaca &ldquo;keseluruhan konteks&rdquo; pantun untuk memahami mesej atau niat penulis.
                         </p>
                         <div style={{ background: 'var(--bg-tertiary)', padding: '1rem', borderRadius: 'var(--radius-sm)', borderLeft: '3px solid var(--primary)' }}>
                             <strong style={{ color: 'var(--primary-light)' }}>💡 Kekuatan & Kelemahan:</strong>
@@ -87,7 +87,7 @@ export default function InsightsPage() {
                         <div style={{ background: 'var(--bg-tertiary)', padding: '1rem', borderRadius: 'var(--radius-sm)', borderLeft: '3px solid var(--accent)' }}>
                             <strong style={{ color: 'var(--accent-light)' }}>💡 Kekuatan & Kelemahan:</strong>
                             <p style={{ marginTop: '0.5rem', fontSize: '0.9rem', color: 'var(--text-secondary)' }}>
-                                Amat tepat jika terdapat kata kunci jelas seperti "Tuhan" (Agama) atau "Budi" (Budi). Akan tetapi, ia gagal menangkap nuansa. Jika pantun menyebut "Kasih sayang ibu", SVM terus menganggapnya pantun <strong>Percintaan</strong> semata-mata kerana wujudnya perkataan "Kasih".
+                                Amat tepat jika terdapat kata kunci jelas seperti &ldquo;Tuhan&rdquo; (Agama) atau &ldquo;Budi&rdquo; (Budi). Akan tetapi, ia gagal menangkap nuansa. Jika pantun menyebut &ldquo;Kasih sayang ibu&rdquo;, SVM terus menganggapnya pantun <strong>Percintaan</strong> semata-mata kerana wujudnya perkataan &ldquo;Kasih&rdquo;.
                             </p>
                         </div>
                     </div>
@@ -104,7 +104,7 @@ export default function InsightsPage() {
                         <div style={{ background: 'var(--bg-tertiary)', padding: '1rem', borderRadius: 'var(--radius-sm)', borderLeft: '3px solid var(--text-muted)' }}>
                             <strong style={{ color: 'var(--text-primary)' }}>💡 Kekuatan & Kelemahan:</strong>
                             <p style={{ marginTop: '0.5rem', fontSize: '0.9rem', color: 'var(--text-secondary)' }}>
-                                Prestasinya paling lemah kerana rangkaian CNN memerlukan data berskala gergasi untuk membina filter yang bermakna. Oleh kerana dataset kita mempunyai kelas yang sangat kecil (seperti Teka-Teki dengan hanya 42 sampel ujian), TextCNN tidak mempunyai cukup data untuk "belajar".
+                                Prestasinya paling lemah kerana rangkaian CNN memerlukan data berskala gergasi untuk membina filter yang bermakna. Oleh kerana dataset kita mempunyai kelas yang sangat kecil (seperti Teka-Teki dengan hanya 42 sampel ujian), TextCNN tidak mempunyai cukup data untuk &ldquo;belajar&rdquo;.
                             </p>
                         </div>
                     </div>

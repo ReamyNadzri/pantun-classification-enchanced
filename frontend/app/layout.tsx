@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Klasifikasi Pantun Melayu | SVM Classifier",
-  description: "Sistem pengklasifikasian tema pantun Melayu menggunakan algoritma SVM (Support Vector Machine). Masukkan pantun anda untuk mengenal pasti tema.",
+  title: "Pantun AI — Pengelas Tema Pantun Melayu",
+  description: "Sistem AI untuk mengenal pasti tema pantun Melayu menggunakan SVM, TextCNN, dan MalayBERT.",
 };
 
 export default function RootLayout({
@@ -13,15 +13,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ms" suppressHydrationWarning>
-      <body style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
-        <div className="bg-pattern" />
-        <div style={{ flex: 1 }}>
-          {children}
-        </div>
-        <footer className="footer">
-          <p>&copy; 2026 Owned by <span>AbeFiwanExpertStudio</span>. Hak Cipta Terpelihara.</p>
-        </footer>
-      </body>
+      <body>{children}</body>
     </html>
   );
 }
